@@ -17,18 +17,19 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/client/index.html");
 });
 
-let clientCount = 0;
+let totalClientCount = 0;
 let rooms = {};
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
-  clientCount += 1;
-  console.log("clientCount: ", clientCount);
+  totalClientCount += 1;
+  console.log("totalClientCount: ", totalClientCount);
+
+  io.emit("newPlayerConnected")
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
-    clientCount -= 1;
-    console.log("clientCount: ", clientCount);
+    totalClientCount -= 1;
+    console.log("totalClientCount: ", totalClientCount);
   });
 
   socket.on("createGame", () => {
@@ -48,10 +49,13 @@ io.on("connection", (socket) => {
     if (rooms[data.roomId] != null) {
       console.log("exists");
       socket.join(data.roomId);
-      socket.to(data.roomId).emit("playersConnected", {});
-      socket.emit("playersConnected");
+      io.emit("playersConnectedToGame");
+      
+      console.log(data.roomId);
 
+      socket.to(data.roomId).emit("playersConnectedToGame", {});
     }
+    
   });
 });
 

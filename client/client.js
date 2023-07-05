@@ -1,10 +1,7 @@
-console.log("loaded client.js");
-
 const socket = io();
 let roomId = null;
 
 const createGame = () => {
-  console.log("create");
   socket.emit("createGame");
 };
 
@@ -44,7 +41,11 @@ socket.on("newGame", (data) => {
   document.getElementById("waitingArea").appendChild(copyButton);
 });
 
-socket.on("playersConnected", () => {
-  console.log("playersConnected");
-  document.getElementById("waitingArea").innerHTML = `Players connected`;
+socket.on("playersConnectedToGame", () => {
+  console.log("playersConnectedToGame", "client");
+  document.getElementById("waitingArea").innerHTML = `playersConnectedToGame`;
+});
+
+socket.on("newPlayerConnected", () => {
+  console.log("newPlayerConnected");
 });
