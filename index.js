@@ -14,17 +14,18 @@ app.get("/hearthcheck", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/client/index.html");
+  res.sendFile(__dirname + "/index.html");
 });
 
 let totalClientCount = 0;
 let rooms = {};
 
 io.on("connection", (socket) => {
+  console.log("user connected");
   totalClientCount += 1;
   console.log("totalClientCount: ", totalClientCount);
 
-  io.emit("newPlayerConnected")
+  io.emit("newPlayerConnected");
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
@@ -33,9 +34,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("createGame", () => {
-    console.log("createGame, server");
+    console.log("createGame");
 
-    const roomId = Math.floor(Math.random() * 100);
+    const roomId = String(Math.floor(Math.random() * 100));
 
     rooms[roomId] = {};
     socket.join(roomId);
@@ -43,19 +44,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on("joinGame", (data) => {
-    console.log("joinGame, server");
-    console.log("data: ", data.roomId);
-    console.log(rooms);
-    if (rooms[data.roomId] != null) {
-      console.log("exists");
-      socket.join(data.roomId);
-      io.emit("playersConnectedToGame");
-      
-      console.log(data.roomId);
+    console.log(`joinGame ${data.roomId}`);
 
-      socket.to(data.roomId).emit("playersConnectedToGame", {});
+    if (rooms[data.roomId] != null) {
+      socket.join(data.roomId);
+      io.to(data.roomId).emit("playersConnectedToGame");
     }
-    
   });
 });
 
