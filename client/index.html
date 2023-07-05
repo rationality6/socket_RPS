@@ -7,8 +7,29 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div>foo</div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <div>RPC game</div>
+    <br />
+
+    <div id="initial">
+      <div>
+        <button onclick="createGame()">create game</button>
+      </div>
+      <div>or</div>
+      <div>
+        <div>
+          <input type="text" id="roomId" />
+        </div>
+        <button onclick="joinGame()">join game</button>
+      </div>
+    </div>
+
+    <div id="gamePlay">
+      <div id="waitingArea"></div>
+      <div id="gameArea" style="display: none"></div>
+      <div id="winnerArea"></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
     <script src="client.js"></script>
   </body>
 </html>
