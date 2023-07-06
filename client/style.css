@@ -15,5 +15,5 @@ input {
 }
 
 .mouse-over-select {
-  @apply cursor-pointer hover:bg-gray-200;
+  @apply cursor-pointer border rounded m-1 p-1 hover:bg-gray-200;
 }

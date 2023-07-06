@@ -7,39 +7,28 @@
     <link rel="stylesheet" href="output.css" />
   </head>
   <body>
-    <div>RPC game</div>
+    <div class="my-2">RPC game</div>
 
-    <br />
-
-    <div id="initial">
+    <div id="initial" class="my-2 p-1 border rounded">
       <div>
         <button onclick="createGame()">create game</button>
       </div>
-
-      <div class="my-4">or</div>
-
-      <div>
-        <div>
-          <input type="text" id="roomId" />
-        </div>
-        <button onclick="joinGame()">join game</button>
-      </div>
     </div>
 
-    <div id="gamePlay">
-      <div id="waitingArea"></div>
+    <div id="waitingArea" class="my-16 border p-5 rounded" style="display: none"></div>
 
-      <div id="gameArea" style="display: none">
+    <div id="gamePlay" class="my-16 border p-5 rounded" style="display: none">
+      <div id="gameArea">
         <div class="m-1">You:</div>
-        
+
         <div id="playerChoice">
           <button onclick="sendChoice('Rock')">Rock</button>
           <button onclick="sendChoice('Paper')">Paper</button>
           <button onclick="sendChoice('Scissor')">Scissors</button>
         </div>
-        
+
         <div class="m-1">Opponent:</div>
-        
+
         <div id="player2Choice">
           <div id="opponentState">Waiting for Opponent</div>
         </div>
@@ -48,12 +37,16 @@
       <div id="winnerArea"></div>
     </div>
 
-    <br />
-    <div id="clientList" class="border p-1 rounded">
-      <div>Client List</div>
-      <br>
+    <div class="border rounded p-1 my-2" id="roomList">
+      <div>RoomList<span id="roomTotalCountArea" class="rounded border p-1 mx-1">0</span></div>
+      <br />
+      <div id="roomListArea"></div>
+    </div>
+
+    <div id="clientList" class="border p-1 my-2 rounded">
+      <div>Client List<span id="clientTotalArea" class="rounded border p-1 mx-1">0</span></div>
+      <br />
       <div id="clientListArea"></div>
-      <div id="clientTotalArea"></div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
