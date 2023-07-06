@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply m-2;
+}
+
+button {
+  @apply bg-yellow-500 text-white font-bold py-2 px-4 rounded;
+}
+
+input {
+  @apply border my-2 rounded
+}
+
+.mouse-over-select {
+  @apply cursor-pointer hover:bg-gray-200;
+}

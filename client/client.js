@@ -49,9 +49,11 @@ socket.on("playersConnectedToGame", () => {
 socket.on("connectionsChanged", (data) => {
   document.getElementById("clientListArea").innerHTML = "";
   const idDivs = data.userIds.forEach((id) => {
-    document.getElementById("clientListArea").innerHTML += `<div>${id}</div>`;
+    document.getElementById("clientListArea").innerHTML += `<div class="mouse-over-select">${id}</div>`;
   });
   document.getElementById("clientTotalArea").innerHTML = data.userIds.length;
 });
 
-const sendChoice = (choice) => {};
+const sendChoice = (choice) => {
+  socket.emit("choiceEvent", { roomId: roomId, choice: choice });
+};

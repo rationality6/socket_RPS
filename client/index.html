@@ -4,17 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>rps socket</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="output.css" />
   </head>
   <body>
     <div>RPC game</div>
+
     <br />
 
     <div id="initial">
       <div>
         <button onclick="createGame()">create game</button>
       </div>
-      <div>or</div>
+
+      <div class="my-4">or</div>
+
       <div>
         <div>
           <input type="text" id="roomId" />
@@ -27,26 +30,28 @@
       <div id="waitingArea"></div>
 
       <div id="gameArea" style="display: none">
-        You:
+        <div class="m-1">You:</div>
+        
         <div id="playerChoice">
           <button onclick="sendChoice('Rock')">Rock</button>
           <button onclick="sendChoice('Paper')">Paper</button>
           <button onclick="sendChoice('Scissor')">Scissors</button>
         </div>
-        Opponent:
+        
+        <div class="m-1">Opponent:</div>
+        
         <div id="player2Choice">
-          <button onclick="sendChoice('Rock')">Rock</button>
-          <button onclick="sendChoice('Paper')">Paper</button>
-          <button onclick="sendChoice('Scissor')">Scissors</button>
+          <div id="opponentState">Waiting for Opponent</div>
         </div>
       </div>
 
       <div id="winnerArea"></div>
     </div>
 
-    <br>
-    <div id="clientList">
+    <br />
+    <div id="clientList" class="border p-1 rounded">
       <div>Client List</div>
+      <br>
       <div id="clientListArea"></div>
       <div id="clientTotalArea"></div>
     </div>
