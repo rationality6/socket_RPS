@@ -6,7 +6,6 @@ const createGame = () => {
 };
 
 const joinGame = () => {
-  console.log("join");
   roomId = document.getElementById("roomId").value;
   socket.emit("joinGame", { roomId: roomId });
 };
@@ -42,10 +41,17 @@ socket.on("newGame", (data) => {
 });
 
 socket.on("playersConnectedToGame", () => {
-  console.log("playersConnectedToGame", "client");
-  document.getElementById("waitingArea").innerHTML = `playersConnectedToGame`;
+  document.getElementById("initial").style.display = "none";
+  document.getElementById("waitingArea").style.display = "none";
+  document.getElementById("gameArea").style.display = "block";
 });
 
-socket.on("newPlayerConnected", () => {
-  console.log("newPlayerConnected");
+socket.on("connectionsChanged", (data) => {
+  document.getElementById("clientListArea").innerHTML = "";
+  const idDivs = data.userIds.forEach((id) => {
+    document.getElementById("clientListArea").innerHTML += `<div>${id}</div>`;
+  });
+  document.getElementById("clientTotalArea").innerHTML = data.userIds.length;
 });
+
+const sendChoice = (choice) => {};

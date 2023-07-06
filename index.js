@@ -17,20 +17,19 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-let totalClientCount = 0;
+let clientList = [];
 let rooms = {};
 
 io.on("connection", (socket) => {
-  console.log("user connected");
-  totalClientCount += 1;
-  console.log("totalClientCount: ", totalClientCount);
+  clientList.push(socket.id);
 
-  io.emit("newPlayerConnected");
+  io.emit("connectionsChanged", { userIds: clientList });
 
   socket.on("disconnect", () => {
-    console.log("user disconnected");
-    totalClientCount -= 1;
-    console.log("totalClientCount: ", totalClientCount);
+    const targetIndex = clientList.indexOf(socket.id);
+    clientList.splice(targetIndex, 1);
+
+    io.emit("connectionsChanged", { userIds: clientList });
   });
 
   socket.on("createGame", () => {
