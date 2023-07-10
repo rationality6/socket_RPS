@@ -6,11 +6,6 @@ const createGame = () => {
   socket.emit("createGame");
 };
 
-const joinGame = () => {
-  roomId = document.getElementById("roomId").value;
-  socket.emit("joinGame", { roomId: roomId });
-};
-
 const createCopyButton = () => {
   const copyButton = document.createElement("button");
   copyButton.style.display = "block";
@@ -40,6 +35,7 @@ const createJoinRoomDiv = (rooms, roomKey) => {
   } else {
     joinRoomDiv.innerHTML = roomKey;
     joinRoomDiv.addEventListener("click", () => {
+      roomId = roomKey;
       socket.emit("joinGame", { roomId: roomKey });
     });
   }
@@ -104,5 +100,12 @@ socket.on("updateRoomList", (data) => {
 });
 
 const sendChoice = (choice) => {
-  socket.emit("choiceEvent", { roomId: roomId, choice: choice });
+  socket.emit("choiceEvent", {
+    roomId: roomId,
+    choice: choice,
+    socketId: socketId,
+  });
 };
+
+socket.on("playerChoiceEvent", (data) => {});
+socket.on("player2ChoiceEvent", (data) => {});

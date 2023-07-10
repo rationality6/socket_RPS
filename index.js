@@ -20,6 +20,10 @@ app.get("/", (req, res) => {
 let clientList = [];
 let roomList = {};
 
+const declareWinner = (roomId) => {
+  console.log("declareWinner");
+};
+
 io.on("connection", (socket) => {
   clientList.push(socket.id);
 
@@ -29,12 +33,12 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     const targetIndex = clientList.indexOf(socket.id);
-    
+
     Object.keys(roomList).forEach((room) => {
-      if(roomList[room].owner == socket.id){
-        delete roomList[room]
+      if (roomList[room].owner == socket.id) {
+        delete roomList[room];
       }
-    })
+    });
 
     socket.leaveAll();
     clientList.splice(targetIndex, 1);
@@ -47,7 +51,7 @@ io.on("connection", (socket) => {
     const roomId = String(Math.floor(Math.random() * 100000));
 
     roomList[roomId] = { owner: socket.id, guest: null };
-    console.log(roomList)
+    console.log(roomList);
     socket.join(roomId);
     socket.emit("setRoomId", { roomId: roomId });
     socket.emit("newGame", { roomId: roomId });
@@ -64,7 +68,18 @@ io.on("connection", (socket) => {
       io.emit("updateRoomList", { roomList: roomList });
     }
 
-    console.log(roomList)
+    console.log(roomList);
+  });
+
+  socket.on("choiceEvent", (data) => {
+    if (roomList[data.roomId].owner == data.socketId) {
+      roomList[data.roomId].ownerChoice = data.choice;
+    } else {
+      roomList[data.roomId].guestChoice = data.choice;
+    }
+
+    console.log(data)
+    declareWinner();
   });
 });
 

@@ -15,22 +15,32 @@
       </div>
     </div>
 
-    <div id="waitingArea" class="my-16 border p-5 rounded" style="display: none"></div>
+    <div
+      id="waitingArea"
+      class="my-16 border p-5 rounded"
+      style="display: none"
+    ></div>
 
     <div id="gamePlay" class="my-16 border p-5 rounded" style="display: none">
       <div id="gameArea">
         <div class="m-1">You:</div>
 
-        <div id="playerChoice">
-          <button onclick="sendChoice('Rock')">Rock</button>
-          <button onclick="sendChoice('Paper')">Paper</button>
-          <button onclick="sendChoice('Scissor')">Scissors</button>
+        <div id="playerChoice" class="flex justify-center">
+          <button class="w-24 hover:bg-yellow-400 m-1" onclick="sendChoice('Rock')">
+            Rock <div class="text-gray-200">q</div>
+          </button>
+          <button class="w-24 hover:bg-yellow-400 m-1" onclick="sendChoice('Paper')">
+            Paper <div class="text-gray-200">w</div>
+          </button>
+          <button class="w-24 hover:bg-yellow-400 m-1" onclick="sendChoice('Scissor')">
+            Scissors <div class="text-gray-200">e</div>
+          </button>
         </div>
 
         <div class="m-1">Opponent:</div>
 
-        <div id="player2Choice">
-          <div id="opponentState">Waiting for Opponent</div>
+        <div id="player2Choice" class="flex justify-center">
+          <div id="opponentState">Waiting for Opponent...</div>
         </div>
       </div>
 
@@ -38,13 +48,21 @@
     </div>
 
     <div class="border rounded p-1 my-2" id="roomList">
-      <div>RoomList<span id="roomTotalCountArea" class="rounded border p-1 mx-1">0</span></div>
+      <div>
+        RoomList<span id="roomTotalCountArea" class="rounded border p-1 mx-1"
+          >0</span
+        >
+      </div>
       <br />
       <div id="roomListArea"></div>
     </div>
 
     <div id="clientList" class="border p-1 my-2 rounded">
-      <div>Client List<span id="clientTotalArea" class="rounded border p-1 mx-1">0</span></div>
+      <div>
+        Client List<span id="clientTotalArea" class="rounded border p-1 mx-1"
+          >0</span
+        >
+      </div>
       <br />
       <div id="clientListArea"></div>
     </div>
