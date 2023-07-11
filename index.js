@@ -6,6 +6,8 @@ const path = require("path");
 const server = http.createServer(app);
 app.use(express.static(path.join(__dirname, "client")));
 
+app.use(express.static('public'))
+
 const { Server } = require("socket.io");
 const io = new Server(server);
 
@@ -60,10 +62,13 @@ io.on("connection", (socket) => {
 
   socket.on("joinGame", (data) => {
     console.log(`joinGame ${data.roomId}`);
-
+    
     if (roomList[data.roomId] != null) {
       socket.join(data.roomId);
       roomList[data.roomId].guest = socket.id;
+
+      socket.emit("playJankenmanStartSound")
+
       io.to(data.roomId).emit("playersConnectedToGame");
       io.emit("updateRoomList", { roomList: roomList });
     }
@@ -78,7 +83,7 @@ io.on("connection", (socket) => {
       roomList[data.roomId].guestChoice = data.choice;
     }
 
-    console.log(data)
+    console.log(roomList)
     declareWinner();
   });
 });

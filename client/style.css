@@ -17,3 +17,7 @@ input {
 .mouse-over-select {
   @apply cursor-pointer border rounded m-1 p-1 hover:bg-gray-200;
 }
+
+.rpc-card {
+  @apply w-24 hover:bg-yellow-400 m-1 flex flex-col justify-center items-center
+}

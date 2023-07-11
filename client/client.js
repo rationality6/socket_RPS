@@ -99,7 +99,32 @@ socket.on("updateRoomList", (data) => {
   ).length;
 });
 
+const createRockPaperScissorsButton = () => {
+  const rpcobj = {
+    rock: {
+      image: "images/rock_auto_con.png",
+      text: "Rock",
+      key: "q",
+    },
+    paper: {
+      image: "images/auto_paper.png",
+      text: "Paper",
+      key: "w",
+    },
+    scissors: {
+      image: "images/scissor.png",
+      text: "Scissors",
+      key: "e",
+    },
+  };
+
+  rpcButtonString = `<button class='rpc-card'><img src='images/rock_auto_con.png' class='w-12 h-12'>Rock <div class='text-gray-300'>q</div></button>`;
+
+};
+
 const sendChoice = (choice) => {
+  document.getElementById("playerChoice").innerHTML = rockString;
+
   socket.emit("choiceEvent", {
     roomId: roomId,
     choice: choice,
@@ -109,3 +134,7 @@ const sendChoice = (choice) => {
 
 socket.on("playerChoiceEvent", (data) => {});
 socket.on("player2ChoiceEvent", (data) => {});
+
+socket.on("playJankenmanStartSound", () => {
+  new Audio("sounds/jankenman_start.mp3").play();
+});
