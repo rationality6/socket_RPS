@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>rps socket</title>
+    <title>RPS battle</title>
     <link rel="stylesheet" href="output.css" />
   </head>
   <body>
-    <div class="my-2">RPC game</div>
+    <div class="my-2">RPS battle</div>
 
     <div id="initial" class="my-2 p-1 border rounded">
       <div>
@@ -25,18 +25,20 @@
       <div id="gameArea">
         <div class="m-1">You:</div>
         <div id="playerChoice" class="flex justify-center">
-          <button class="rpc-card" onclick="sendChoice('Rock')">
-            <img src="images/rock_auto_con.png" class="w-12 h-12" alt="">
+          
+          <button class="rpc-card" onclick="sendChoice('rock')">
+            <img src="images/r.png" class="w-12 h-12" alt="">
             Rock <div class="text-gray-300">q</div>
           </button>
-          <button class="rpc-card" onclick="sendChoice('Paper')">
-            <img src="images/auto_paper.png" class="w-12 h-12" alt="">
+          <button class="rpc-card" onclick="sendChoice('paper')">
+            <img src="images/p.png" class="w-12 h-12" alt="">
             Paper <div class="text-gray-300">w</div>
           </button>
-          <button class="rpc-card" onclick="sendChoice('Scissor')">
-            <img src="images/scissor.png" class="w-12 h-12" alt="">
+          <button class="rpc-card" onclick="sendChoice('scissors')">
+            <img src="images/s.png" class="w-12 h-12" alt="">
             Scissors <div class="text-gray-300">e</div>
           </button>
+
         </div>
 
         <div class="m-1">Opponent:</div>

@@ -19,5 +19,5 @@ input {
 }
 
 .rpc-card {
-  @apply w-24 hover:bg-yellow-400 m-1 flex flex-col justify-center items-center
+  @apply w-24 h-30 hover:bg-yellow-400 m-1 flex flex-col justify-center items-center
 }
