@@ -26,26 +26,32 @@ const setDelay = (delayInms) => {
   return new Promise((resolve) => setTimeout(resolve, delayInms));
 };
 
-const declareWinner = async (roomId) => {
+const declareWinner = async (roomId, socket) => {
   const ownerChoice = roomList[roomId].ownerChoice;
   const guestChoice = roomList[roomId].guestChoice;
 
   await setDelay(1000);
 
   if (ownerChoice == guestChoice) {
+    io.to(roomId).emit("playAgainSound");
+    await setDelay(500)
     io.to(roomId).emit("draw");
   } else if (ownerChoice == "rock" && guestChoice == "scissors") {
     io.to(roomId).emit("ownerWin");
     clientList[0].winningCount += 1;
+    socket.emit("playWinSound");
   } else if (ownerChoice == "scissors" && guestChoice == "paper") {
     io.to(roomId).emit("ownerWin");
     clientList[0].winningCount += 1;
+    socket.emit("playWinSound");
   } else if (ownerChoice == "paper" && guestChoice == "rock") {
     io.to(roomId).emit("ownerWin");
     clientList[0].winningCount += 1;
+    socket.emit("playWinSound");
   } else {
     io.to(roomId).emit("guestWin");
     clientList[0].winningCount += 1;
+    socket.emit("playWinSound");
   }
 };
 
@@ -109,27 +115,51 @@ io.on("connection", (socket) => {
   });
 
   socket.on("choiceEvent", async (data) => {
-    if (roomList[data.roomId].owner == data.socketId) {
+    const isOwner = roomList[data.roomId].owner == data.socketId;
+    if (isOwner) {
       roomList[data.roomId].ownerChoice = data.choice;
     } else {
       roomList[data.roomId].guestChoice = data.choice;
     }
 
-    socket.broadcast.emit("player2ChoiceEvent", { player2choice: data.choice });
+    socket.broadcast.emit("player2ChoiceEvent", { choice: "guess" });
 
-    io.to(data.roomId).emit("playAgainSound");
-    await setDelay(1000);
+    io.to(data.roomId).emit("playChoiceSound");
+    await setDelay(500);
 
-    if (roomList[data.roomId].ownerChoice && roomList[data.roomId].guestChoice) {
-      declareWinner(data.roomId);
-    
+    if (
+      roomList[data.roomId].ownerChoice &&
+      roomList[data.roomId].guestChoice
+    ) {
+      if (isOwner) {
+        socket.emit("player2ChoiceEvent", {
+          choice: roomList[data.roomId].guestChoice,
+        });
+        socket.broadcast.emit("player2ChoiceEvent", {
+          choice: roomList[data.roomId].ownerChoice,
+        });
+      } else {
+        socket.emit("player2ChoiceEvent", {
+          choice: roomList[data.roomId].ownerChoice,
+        });
+        socket.broadcast.emit("player2ChoiceEvent", {
+          choice: roomList[data.roomId].guestChoice,
+        });
+      }
+
+      await setDelay(500);
+
+      declareWinner(data.roomId, socket);
+
+      roomList[data.roomId].ownerChoice = null;
+      roomList[data.roomId].guestChoice = null;
+
       io.emit("connectionsChanged", {
         userId: socket.id,
         clientList: clientList,
       });
     } else {
     }
-    
   });
 });
 

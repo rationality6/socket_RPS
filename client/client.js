@@ -7,23 +7,6 @@ const createGame = () => {
   socket.emit("createGame");
 };
 
-const createCopyButton = () => {
-  const copyButton = document.createElement("button");
-  copyButton.style.display = "block";
-  copyButton.innerHTML = "Copy code";
-  copyButton.addEventListener("click", () => {
-    navigator.clipboard.writeText(roomId).then(
-      () => {
-        console.log("Async: Copying to clipboard was successful!");
-      },
-      function (err) {
-        console.error("Async: Could not copy text: ", err);
-      }
-    );
-  });
-  return copyButton;
-};
-
 const createJoinRoomDiv = (rooms, roomKey) => {
   const joinRoomDiv = document.createElement("div");
   joinRoomDiv.classList = "mouse-over-select";
@@ -145,18 +128,23 @@ const createRockPaperScissorsButton = (choice) => {
 };
 
 const resetRPCButtons = () => {
-  document.getElementById("playerChoice").innerHTML = `      <button class="rpc-card" onclick="sendChoice('rock')">
-            <img src="images/rock_auto_con.png" class="w-12 h-12" alt="">
+  document.getElementById("playerChoice").innerHTML = `
+  <button class="rpc-card" onclick="sendChoice('rock')">
+            <img src="images/r.png" class="w-12 h-12" alt="">
             Rock <div class="text-gray-300">q</div>
           </button>
           <button class="rpc-card" onclick="sendChoice('paper')">
-            <img src="images/auto_paper.png" class="w-12 h-12" alt="">
+            <img src="images/p.png" class="w-12 h-12" alt="">
             Paper <div class="text-gray-300">w</div>
           </button>
           <button class="rpc-card" onclick="sendChoice('scissors')">
-            <img src="images/scissors.png" class="w-12 h-12" alt="">
+            <img src="images/s.png" class="w-12 h-12" alt="">
             Scissors <div class="text-gray-300">e</div>
           </button>`;
+
+  document.getElementById(
+    "player2Choice"
+  ).innerHTML = `<div id="opponentState">Waiting for Opponent...</div>`;
 };
 
 const sendChoice = (choice) => {
@@ -170,23 +158,22 @@ const sendChoice = (choice) => {
   });
 };
 
-socket.on("playerChoiceEvent", (data) => {});
-
 socket.on("player2ChoiceEvent", (data) => {
   document.getElementById("player2Choice").innerHTML =
-    createRockPaperScissorsButton("guess");
+    createRockPaperScissorsButton(data.choice);
 });
 
 socket.on("ownerWin", (data) => {
-  console.log("ownerWin");
+  new Audio("sounds/jankenman_start.mp3").play();
+  resetRPCButtons();
 });
 
 socket.on("guestWin", (data) => {
-  console.log("guestWin");
+  new Audio("sounds/jankenman_start.mp3").play();
+  resetRPCButtons();
 });
 
 socket.on("draw", (data) => {
-  console.log("draw");
   new Audio("sounds/jankenman_start.mp3").play();
   resetRPCButtons();
 });
@@ -195,6 +182,18 @@ socket.on("playStartSound", () => {
   new Audio("sounds/jankenman_start.mp3").play();
 });
 
+socket.on("playChoiceSound", () => {
+  new Audio("sounds/choice.mp3").play();
+});
+
 socket.on("playAgainSound", () => {
-  new Audio("sounds/play_again.mp3").play();
+  new Audio("sounds/again.mp3").play();
+});
+
+socket.on("playLoseSound", () => {
+  new Audio("sounds/lose.mp3").play();
+});
+
+socket.on("playWinSound", () => {
+  new Audio("sounds/win.mp3").play();
 });
