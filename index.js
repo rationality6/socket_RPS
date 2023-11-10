@@ -34,7 +34,7 @@ const declareWinner = async (roomId, socket) => {
 
   if (ownerChoice == guestChoice) {
     io.to(roomId).emit("playAgainSound");
-    await setDelay(500)
+    await setDelay(500);
     io.to(roomId).emit("draw");
   } else if (ownerChoice == "rock" && guestChoice == "scissors") {
     io.to(roomId).emit("ownerWin");
@@ -115,6 +115,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("choiceEvent", async (data) => {
+    if (!roomList[data.roomId]) {
+      return;
+    }
+
     const isOwner = roomList[data.roomId].owner == data.socketId;
     if (isOwner) {
       roomList[data.roomId].ownerChoice = data.choice;
@@ -163,6 +167,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log("listening on *:3000");
+server.listen(8080, () => {
+  console.log("listening on *:8080");
 });
